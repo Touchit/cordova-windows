@@ -147,7 +147,7 @@ function list_emulator_images(path) {
 
 // lists any started emulators *NOT IMPLEMENTED*
 function list_started_emulators(path) {
-    Log('ERROR : list-started-emulators is not supported on Windows Phone.', true);
+    Log('ERROR : list-started-emulators is not supported on Windows 8.1.', true);
     WScript.Quit(1);
 }
 
