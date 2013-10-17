@@ -19,6 +19,6 @@
 # under the License.
 #
 
-echo "ERROR: Cordova tooling for Windows 8 requires Windows 8 Professional with the 'msbuild' command "
-echo " in the PATH environment variable as well as having .NET Framework 4.0 (from WP SDK's)"
+echo "ERROR: Cordova tooling for Windows 8 requires Windows 8.1 Professional with the 'msbuild' command "
+echo " in the PATH environment variable as well as having .NET Framework 4.5 (from W8.1 SDK's)"
 exit 1
