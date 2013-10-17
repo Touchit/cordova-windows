@@ -115,12 +115,12 @@ function replaceInFile(filename, regexp, replacement) {
 
 // returns true if the given path is the root of a cordova windows phone project
 // currently returns true if the folder contains a .csproj file.
-function is_windows_phone_project(path) {
+function is_windows_height_project(path) {
     if (fso.FolderExists(path)) {
         var proj_folder = fso.GetFolder(path);
         var proj_files = new Enumerator(proj_folder.Files);
         for (;!proj_files.atEnd(); proj_files.moveNext()) {
-            if (fso.GetExtensionName(proj_files.item()) == 'csproj') {
+            if (fso.GetExtensionName(proj_files.item()) == 'jsproj') {
                 return true;  
             }
         }
@@ -130,10 +130,10 @@ function is_windows_phone_project(path) {
 
 // returns the name of the application
 function get_app_name(path) {
-    var WMAppManifest = read(path + '\\Properties\\WMAppManifest.xml').split('\n');
-    for (line in WMAppManifest) {
-        if (WMAppManifest[line].match(/Title\=\"/)) {
-            return WMAppManifest[line].split('Title="')[1].split('"')[0];
+    var appManifest = read(path + '\\package.appxmanifest').split('\n');
+    for (line in appManifest) {
+        if (appManifest[line].match(/DisplayName\=\"/)) {
+            return appManifest[line].split('DisplayName="')[1].split('"')[0];
         }
     }
     Log("Error : unable to find applicaiton name in the project.", true);
@@ -143,10 +143,10 @@ function get_app_name(path) {
 
 // returns the name of the application package
 function get_package_name(path) {
-    var WMAppManifest = read(path + '\\Properties\\WMAppManifest.xml').split('\n');
-    for (line in WMAppManifest) {
-        if (WMAppManifest[line].match(/Title\=\"/)) {
-            return WMAppManifest[line].split('Title="')[1].split('"')[0];
+    var appManifest = read(path + '\\package.appxmanifest').split('\n');
+    for (line in appManifest) {
+        if (appManifest[line].match(/Application Id\=\"/)) {
+            return appManifest[line].split('Application Id="')[1].split('"')[0];
         }
     }
     Log("Error : unable to find applicaiton name in the project.", true);
@@ -156,10 +156,10 @@ function get_package_name(path) {
 
 // returns the GUID ame of the application
 function get_app_GUID(path) {
-    var AppXAML = read(path + '\\App.xaml').split('\n');
-    for (line in AppXAML) {
-        if (AppXAML[line].match(/x\:Class\=\"/)) {
-            return AppXAML[line].split('Class="')[1].split('"')[0];
+    var appManifest = read(path + '\\package.appxmanifest').split('\n');
+    for (line in appManifest) {
+        if (appManifest[line].match(/Identity Name\=\"/)) {
+            return appManifest[line].split('Identity Name="')[1].split('"')[0];
         }
     }
     Log("Error : unable to find package name in the project.", true);
@@ -197,9 +197,10 @@ function update_cordova_js(path) {
 function save_restore(source, destination) {
     fso.CreateFolder(destination + '\\www');
     copy_to(source + '\\www', destination + '\\www');
-    copy_to(source + '\\SplashScreenImage.jpg', destination + '\\SplashScreenImage.jpg');
-    copy_to(source + '\\Background.png', destination + '\\Background.png');
-    copy_to(source + '\\ApplicationIcon.png', destination + '\\ApplicationIcon.png');
+    copy_to(source + '\\images\\logo.png', destination + '\\images\\logo.png');
+    copy_to(source + '\\images\\smalllogo.png', destination + '\\images\\smalllogo.png');
+    copy_to(source + '\\images\\splashscreen.png', destination + '\\images\\splashscreen.png');
+    copy_to(source + '\\images\\storelogo.png', destination + '\\images\\storelogo.png');
     copy_to(source + '\\config.xml', destination + '\\config.xml');
 }
 
@@ -316,7 +317,7 @@ if (args.Count() > 0) {
         Usage();
         WScript.Quit(1);
     }
-    else if (fso.FolderExists(args(0)) && is_windows_phone_project(args(0))) {
+    else if (fso.FolderExists(args(0)) && is_windows_height_project(args(0))) {
         if(args.Count() > 1) {
             /*if(args(1) == '-f' || args(1) == '--force') {
                 //TODO: do something for this
@@ -337,7 +338,7 @@ if (args.Count() > 0) {
     }
     else if (fso.FolderExists(args(0))) {
         Log("The path provided is not a path to a cordova windows phone project.", true);
-        Log(" Please provide the path to the root folder of your cordova windows phone project.", true);
+        Log(" Please provide the path to the root folder of your cordova windows 8.1 project.", true);
         WScript.Quit(2);
     }
     else {
